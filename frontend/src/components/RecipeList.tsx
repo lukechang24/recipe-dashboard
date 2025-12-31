@@ -1,12 +1,23 @@
-import React from "react"
-import { RecipesQuery } from "../app/types"
+'use client'
+import { useQuery } from "@apollo/client/react";
+import { GET_RECIPES } from "../graphql/queries";
+import { Recipe } from "../app/types";
 
-const RecipeList: React.FC<RecipesQuery> = ({ recipes }) => {
+import RecipeCard from "./RecipeCard";
 
+type RecipesQuery = {
+    recipes: Recipe[]
+}
+
+const RecipeList = () => {
+    const { data } = useQuery<RecipesQuery>(GET_RECIPES)
+    console.log(data, "this")
     return(
-        recipes.map(recipe => {
-            return recipe.title
-        })
+        <>
+            {data ? data.recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} {...recipe}/>
+            )) : null}
+        </>
     )
 }
 

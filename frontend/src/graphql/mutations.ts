@@ -7,6 +7,7 @@ const ADD_RECIPE = gql`
             success
             message
             recipe {
+                id
                 title
             }
         }
@@ -21,6 +22,7 @@ const UPDATE_RECIPE = gql`
             message
             recipe {
                 title
+                id
             }
         }
     }

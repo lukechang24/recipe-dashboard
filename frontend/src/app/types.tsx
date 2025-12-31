@@ -1,16 +1,23 @@
-interface RecipesQuery {
+type RecipeListProps = {
   recipes: Recipe[]
 }
 
-interface Recipe {
+type Recipe = {
     id: string
     title: string
-    ingredients?: {
-        quantity: string
-        ingredient: {
-            name: string
-        }
-    }
+    createdAt: Date
+    description?: string | null
 }
+// interface Recipe {
+//     id: string
+//     title: string
+//     description: string
+//     ingredients?: {
+//         quantity: string
+//         ingredient: {
+//             name: string
+//         }
+//     }
+// }
 
-export type { RecipesQuery }
+export type { RecipeListProps, Recipe }

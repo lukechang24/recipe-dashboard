@@ -5,14 +5,26 @@ const GET_RECIPES = gql`
         recipes {
             id
             title
-            ingredients {
-                quantity
-                ingredient {
-                    name
-                }
-            }
+            createdAt
+            description
         }
     }
 `
+
+// const GET_RECIPES = gql`
+//     query GetRecipes {
+//         recipes {
+//             id
+//             title
+//             ingredients {
+//                 quantity
+//                 ingredient {
+//                     name
+//                 }
+//             }
+//         }
+//     }
+// `
+
 
 export { GET_RECIPES }
