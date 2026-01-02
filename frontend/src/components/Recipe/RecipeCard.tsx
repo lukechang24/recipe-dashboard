@@ -1,6 +1,6 @@
 import React from "react"
 import { useRouter } from 'next/navigation'
-import { Recipe } from "../app/types"
+import { Recipe } from "../../app/types"
 
 type RecipeCardProps = Recipe
 

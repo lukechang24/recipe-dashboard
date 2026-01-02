@@ -1,7 +1,7 @@
 'use client'
 import { useQuery } from "@apollo/client/react";
-import { GET_RECIPES } from "../graphql/queries";
-import { Recipe } from "../app/types";
+import { GET_RECIPES } from "../../graphql/queries";
+import { Recipe } from "../../app/types";
 
 import RecipeCard from "./RecipeCard";
 

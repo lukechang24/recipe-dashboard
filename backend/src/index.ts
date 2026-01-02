@@ -23,7 +23,7 @@ const typeDefs = `#graphql
 
   type RecipeIngredient {
     ingredient: Ingredient!
-    quantity: String!
+    quantity: String
   }
 
   type Query {
@@ -42,7 +42,7 @@ const typeDefs = `#graphql
 
   input RecipeIngredientInput {
     ingredient: IngredientInput!
-    quantity: String!
+    quantity: String
   }
 
   input IngredientInput {

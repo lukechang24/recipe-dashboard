@@ -1,7 +1,3 @@
-type RecipeListProps = {
-  recipes: Recipe[]
-}
-
 type Recipe = {
     id: string
     title: string
@@ -31,4 +27,4 @@ type Ingredient = {
 //     }
 // }
 
-export type { Ingredient, RecipeListProps, Recipe }
+export type { Ingredient, Recipe }
