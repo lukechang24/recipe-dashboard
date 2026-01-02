@@ -6,7 +6,18 @@ type Recipe = {
     id: string
     title: string
     createdAt: Date
+    updatedAt?: Date | null
     description?: string | null
+    instructions: string
+    ingredients: {
+        quantity: string
+        ingredient: Ingredient
+    }
+}
+
+type Ingredient = {
+    id?: string | null
+    name: string
 }
 // interface Recipe {
 //     id: string
@@ -20,4 +31,4 @@ type Recipe = {
 //     }
 // }
 
-export type { RecipeListProps, Recipe }
+export type { Ingredient, RecipeListProps, Recipe }

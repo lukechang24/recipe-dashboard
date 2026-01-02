@@ -27,8 +27,9 @@ const typeDefs = `#graphql
 
   type Query {
     ingredients: [Ingredient!]!
-    ingredient(id: ID!) : Ingredient
+    ingredient(id: ID!): Ingredient
     recipes: [Recipe!]!
+    recipe(id: ID!): Recipe
   }
 
   input AddRecipeInput {
@@ -69,7 +70,7 @@ const typeDefs = `#graphql
   }
 
   type Mutation {
-    addRecipe(input: AddRecipeInput) : AddRecipePayload!
+    addRecipe(input: AddRecipeInput): AddRecipePayload!
     updateRecipe(id: ID!, input: UpdateRecipeInput!): UpdateRecipePayload!
   }
 `;
@@ -78,7 +79,7 @@ const resolvers = {
         recipes: async () => {
             try {
                 const res = await pool.query(`
-         SELECT title, description, id, created_at AS "createdAt" from recipes
+         SELECT title, description, id, created_at AS "createdAt", updated_at AS "updatedAt" from recipes
          `);
                 return res.rows;
             }
@@ -97,6 +98,19 @@ const resolvers = {
             catch (error) {
                 console.log(error);
                 throw new Error("failed to fetch ingredients");
+            }
+        },
+        recipe: async (_, { id }) => {
+            try {
+                const res = await pool.query(`
+          SELECT *, created_at AS "createdAt", updated_at AS "updatedAt" from recipes
+          WHERE id = $1
+          `, [id]);
+                return res.rows[0];
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error('failed to fetch recipe');
             }
         },
         ingredient: async (_, { id }) => {

@@ -6,7 +6,26 @@ const GET_RECIPES = gql`
             id
             title
             createdAt
+            updatedAt
             description
+        }
+    }
+`
+
+const GET_RECIPE = gql`
+    query GetRecipe($id: ID!) {
+        recipe(id: $id) {
+            title
+            createdAt
+            description
+            instructions
+            updatedAt
+            ingredients {
+                quantity
+                ingredient {
+                    name
+                }
+            }
         }
     }
 `
@@ -27,4 +46,4 @@ const GET_RECIPES = gql`
 // `
 
 
-export { GET_RECIPES }
+export { GET_RECIPES, GET_RECIPE }

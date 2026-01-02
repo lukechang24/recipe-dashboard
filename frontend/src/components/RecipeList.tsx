@@ -10,13 +10,15 @@ type RecipesQuery = {
 }
 
 const RecipeList = () => {
-    const { data } = useQuery<RecipesQuery>(GET_RECIPES)
-    console.log(data, "this")
+    const { loading, error, data } = useQuery<RecipesQuery>(GET_RECIPES)
+    if (loading) return <p>loading</p>
+    if (error) return <p>error</p>
+    if (!data) return null    
     return(
         <>
-            {data ? data.recipes.map((recipe) => (
+            {data.recipes.map((recipe) => (
                 <RecipeCard key={recipe.id} {...recipe}/>
-            )) : null}
+            ))}
         </>
     )
 }

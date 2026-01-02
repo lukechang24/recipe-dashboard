@@ -1,9 +1,13 @@
 import React from "react"
+import RecipeForm from "../components/RecipeForm"
 import RecipeList from "../components/RecipeList";
 
 const Home = () => {
   return (
-      <RecipeList />
+      <>
+        <RecipeForm />
+        <RecipeList />
+      </>
   );
 }
 

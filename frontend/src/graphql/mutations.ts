@@ -28,4 +28,4 @@ const UPDATE_RECIPE = gql`
     }
 `
 
-export { UPDATE_RECIPE }
+export { ADD_RECIPE, UPDATE_RECIPE }
