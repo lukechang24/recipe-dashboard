@@ -28,4 +28,18 @@ const UPDATE_RECIPE = gql`
     }
 `
 
-export { ADD_RECIPE, UPDATE_RECIPE }
+const DELETE_RECIPE = gql`
+    mutation DeleteRecipe($id: ID!) {
+        deleteRecipe(id: $id) {
+            code
+            success
+            message
+            recipe {
+                title
+                id
+            }
+        }
+    }
+`
+
+export { ADD_RECIPE, UPDATE_RECIPE, DELETE_RECIPE }

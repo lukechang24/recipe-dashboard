@@ -6,7 +6,7 @@ import { ADD_RECIPE } from "../../graphql/mutations"
 import * as S from "./index"
 
 type IngredientInput = {
-    quantity: String
+    quantity: string
     ingredient: Ingredient
 }
 
@@ -26,13 +26,12 @@ const formatIngredients = (ingredients: string) => {
     })
     return res
 }
-formatIngredients("garlic (3 cloves), sugar (5g), chicken (1 lb)")
 
 const RecipeForm = () => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [instructions, setInstructions] = useState("")
-    const [ingredients, setIngredients] = useState("")
+    const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: ""}}])
     // const [ingredients, setIngredients] = useState<IngredientInput[]>([{ quantity: "5g", ingredient: { name: "salt" } }])
 
     const [addRecipe] = useMutation(ADD_RECIPE, {
@@ -44,16 +43,28 @@ const RecipeForm = () => {
 
     const handleForm = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!ingredients) {
+        if (!title.trim()) {
+            alert("Title is required")
             return
+        }
+
+        if (ingredients.length === 0) {
+            alert("At least one ingredient is required")
+            return
+        }
+
+        for (const i of ingredients) {
+            if (!i.ingredient.name.trim()) {
+            alert("All ingredients need a name and quantity")
+            return
+            }
         }
         const input = {
             title,
             description,
             instructions,
-            ingredients: formatIngredients(ingredients)
+            ingredients
         }
-        console.log(input)
         addRecipe({ variables: { input } })
     }
     return(
@@ -70,11 +81,44 @@ const RecipeForm = () => {
                 Instructions: 
                 <S.RecipeInput value={instructions} onChange={(e) => setInstructions(e.currentTarget.value)}></S.RecipeInput>
             </S.RecipeInputContainer>
-            <S.RecipeInputContainer>
+            <S.IngredientSection>
                 Ingredients: 
-                <S.RecipeInput value={ingredients} onChange={(e) => setIngredients(e.currentTarget.value)} placeholder="e.g. garlic (3 cloves), sugar (5g), chicken (1 lb)"></S.RecipeInput>
-            </S.RecipeInputContainer>
-            {/* <input value={title} onChange={(e) => setTitle(e.currentTarget.value)}></input> */}
+                {
+                    ingredients.map((ing, index) => {
+                        return(
+                            <S.IngredientContainer key={index}>
+                                <input
+                                    placeholder="Ingredient"
+                                    value={ing.ingredient.name}
+                                    onChange={(e) => {
+                                        const updated = [...ingredients]
+                                        updated[index].ingredient.name = e.target.value
+                                        setIngredients(updated)
+                                    }}
+                                    />
+
+                                <input
+                                    placeholder="Quantity"
+                                    value={ing.quantity}
+                                    onChange={(e) => {
+                                        const updated = [...ingredients]
+                                        updated[index].quantity = e.target.value
+                                        setIngredients(updated)
+                                    }}
+                                />
+                                <button type="button" onClick={() => {
+                                setIngredients(ingredients.filter((_, i) => i !== index))
+                                }}>
+                                Remove
+                                </button>
+                            </S.IngredientContainer>
+                        )
+                    })
+                }
+            <button type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "" } }])}>
+                add
+            </button>
+            </S.IngredientSection>
             <button type="submit">Add Recipe</button>
         </S.RecipeForm>
     )

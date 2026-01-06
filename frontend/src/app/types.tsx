@@ -1,18 +1,18 @@
 type Recipe = {
     id: string
     title: string
-    createdAt: Date
-    updatedAt?: Date | null
+    createdAt: string
+    updatedAt?: string | null
     description?: string | null
     instructions: string
     ingredients: {
         quantity: string
         ingredient: Ingredient
-    }
+    }[]
 }
 
 type Ingredient = {
-    id?: string | null
+    id: string
     name: string
 }
 // interface Recipe {

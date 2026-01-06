@@ -16,3 +16,17 @@ import React from "react"
  export const RecipeInput = styled.input`
     width: 375px;
  `
+
+ export const IngredientSection = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+ `
+
+ export const IngredientContainer = styled.div`
+   display: flex;
+ `
+
+ export const IngredientInput = styled.input`
+   
+ `

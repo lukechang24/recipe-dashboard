@@ -22,7 +22,7 @@ const typeDefs = `#graphql
 
   type RecipeIngredient {
     ingredient: Ingredient!
-    quantity: String!
+    quantity: String
   }
 
   type Query {
@@ -41,7 +41,7 @@ const typeDefs = `#graphql
 
   input RecipeIngredientInput {
     ingredient: IngredientInput!
-    quantity: String!
+    quantity: String
   }
 
   input IngredientInput {
@@ -69,9 +69,17 @@ const typeDefs = `#graphql
     recipe: Recipe
   }
 
+  type DeleteRecipePayload {
+    code: Int!
+    success: Boolean!
+    message: String!
+    recipe: Recipe
+  }
+
   type Mutation {
     addRecipe(input: AddRecipeInput): AddRecipePayload!
     updateRecipe(id: ID!, input: UpdateRecipeInput!): UpdateRecipePayload!
+    deleteRecipe(id: ID!) : DeleteRecipePayload!
   }
 `;
 const resolvers = {
@@ -192,6 +200,30 @@ const resolvers = {
             }
             else {
                 return null;
+            }
+        },
+        deleteRecipe: async (_, { id }) => {
+            try {
+                const res = await pool.query(`
+          DELETE FROM recipes
+          WHERE id = $1
+          RETURNING *
+          `, [id]);
+                if (res.rows.length > 0) {
+                    return {
+                        code: 200,
+                        success: true,
+                        message: "Recipe successfully deleted",
+                        recipe: res.rows[0]
+                    };
+                }
+                else {
+                    return null;
+                }
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("failed to delete recipe");
             }
         }
     },

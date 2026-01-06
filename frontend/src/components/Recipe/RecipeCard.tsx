@@ -5,7 +5,7 @@ import { Recipe } from "../../app/types"
 type RecipeCardProps = Recipe
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ id, title, createdAt, description }) => {
-    const dateObj = new Date(createdAt)
+    const date = new Date(createdAt).toDateString()
     const router = useRouter();
 
     const handleNavigation = (id: string) => {
@@ -14,7 +14,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ id, title, createdAt, descripti
     return(
         <div onClick={() => handleNavigation(id)}>
             <h1>{title}</h1>
-            <p>{dateObj.toDateString()}</p>
+            <p>{date}</p>
             <p>{description}</p>
         </div>
     )
