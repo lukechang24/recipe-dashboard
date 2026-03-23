@@ -15,6 +15,11 @@ type Ingredient = {
     id: string
     name: string
 }
+
+type Categories = {
+    name: string
+    id: string
+}
 // interface Recipe {
 //     id: string
 //     title: string
@@ -27,4 +32,4 @@ type Ingredient = {
 //     }
 // }
 
-export type { Ingredient, Recipe }
+export type { Ingredient, Recipe, Categories }

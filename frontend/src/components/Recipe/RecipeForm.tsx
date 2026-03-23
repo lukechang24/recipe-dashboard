@@ -1,7 +1,11 @@
 'use client'
 import React, { useState } from "react"
+import { useQuery } from "@apollo/client/react";
 import { useMutation } from "@apollo/client/react"
 import { ADD_RECIPE } from "../../graphql/mutations"
+import { GET_CATEGORIES, GET_RECIPES } from "../../graphql/queries"
+import { Categories } from "../../app/types";
+
 
 import * as S from "./index"
 
@@ -12,6 +16,10 @@ type IngredientInput = {
 
 type Ingredient = {
     name: string
+}
+
+type CategoriesQuery = {
+    categories: [Categories]
 }
 
 const formatIngredients = (ingredients: string) => {
@@ -31,14 +39,15 @@ const RecipeForm = () => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [instructions, setInstructions] = useState("")
+    const [categoryId, setCategoryId] = useState("1")
     const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: ""}}])
     // const [ingredients, setIngredients] = useState<IngredientInput[]>([{ quantity: "5g", ingredient: { name: "salt" } }])
-
+    const { loading: categoriesLoading, error: categoriesError, data } = useQuery<CategoriesQuery>(GET_CATEGORIES)
     const [addRecipe] = useMutation(ADD_RECIPE, {
         onCompleted: (data) => {
             console.log("recipe added", data)
         },
-        refetchQueries: ["GetRecipes"]
+        refetchQueries: [GET_RECIPES, "GetRecipes"]
     }) 
 
     const handleForm = (e: React.FormEvent) => {
@@ -63,6 +72,7 @@ const RecipeForm = () => {
             title,
             description,
             instructions,
+            categoryId,
             ingredients
         }
         addRecipe({ variables: { input } })
@@ -80,6 +90,17 @@ const RecipeForm = () => {
             <S.RecipeInputContainer>
                 Instructions: 
                 <S.RecipeInput value={instructions} onChange={(e) => setInstructions(e.currentTarget.value)}></S.RecipeInput>
+            </S.RecipeInputContainer>
+            <S.RecipeInputContainer>
+                Recipe Category
+                <S.CategoryDropdown value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                    {data?.categories.map(category => {
+                        const { id, name } = category
+                        return(
+                            <S.Option key={id} value={category.id}>{name}</S.Option>
+                        )
+                    })}
+                </S.CategoryDropdown>
             </S.RecipeInputContainer>
             <S.IngredientSection>
                 Ingredients: 

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
 const GET_RECIPES = gql`
-    query GetRecipes {
-        recipes {
+    query GetRecipes($categoryId: ID) {
+        recipes(categoryId: $categoryId) {
             id
             title
             createdAt
@@ -20,12 +20,24 @@ const GET_RECIPE = gql`
             description
             instructions
             updatedAt
+            category {
+                name
+            }
             ingredients {
                 quantity
                 ingredient {
                     name
                 }
             }
+        }
+    }
+`
+
+const GET_CATEGORIES = gql`
+    query GetCategories {
+        categories {
+            name
+            id
         }
     }
 `
@@ -46,4 +58,4 @@ const GET_RECIPE = gql`
 // `
 
 
-export { GET_RECIPES, GET_RECIPE }
+export { GET_RECIPES, GET_RECIPE, GET_CATEGORIES }

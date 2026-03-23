@@ -10,8 +10,15 @@ const typeDefs = `#graphql
     ingredients: [RecipeIngredient!]!
     description: String
     instructions: String!
+    category: Category!
     createdAt: Timestamp!
     updatedAt: Timestamp
+  }
+
+  type Category {
+    id: ID!
+    name: String!
+    recipes: [Recipe!]!
   }
 
   type Ingredient {
@@ -28,8 +35,10 @@ const typeDefs = `#graphql
   type Query {
     ingredients: [Ingredient!]!
     ingredient(id: ID!): Ingredient
-    recipes: [Recipe!]!
+    recipes(categoryId: ID): [Recipe!]!
     recipe(id: ID!): Recipe
+    category(id: ID!): Category!
+    categories: [Category!]!
   }
 
   input AddRecipeInput {
@@ -37,6 +46,7 @@ const typeDefs = `#graphql
     ingredients: [RecipeIngredientInput!]!
     description: String
     instructions: String!
+    categoryId: ID!
   }
 
   input RecipeIngredientInput {
@@ -84,12 +94,21 @@ const typeDefs = `#graphql
 `;
 const resolvers = {
     Query: {
-        recipes: async () => {
+        recipes: async (_, { categoryId }) => {
             try {
-                const res = await pool.query(`
-         SELECT title, description, id, created_at AS "createdAt", updated_at AS "updatedAt" from recipes
-         `);
-                return res.rows;
+                if (categoryId) {
+                    const res = await pool.query(`
+           SELECT title, description, id, created_at AS "createdAt", updated_at AS "updatedAt" from recipes
+           WHERE category_id = $1
+           `, [categoryId]);
+                    return res.rows;
+                }
+                else {
+                    const res = await pool.query(`
+           SELECT title, description, id, created_at AS "createdAt", updated_at AS "updatedAt" from recipes
+           `);
+                    return res.rows;
+                }
             }
             catch (error) {
                 console.log(error);
@@ -133,6 +152,16 @@ const resolvers = {
                 console.log(error);
                 throw new Error("failed to fetch ingredient");
             }
+        },
+        category: async (_, { id }) => {
+            const res = await pool.query(`SELECT * FROM categories WHERE id = $1`, [id]);
+            return res.rows[0];
+        },
+        categories: async () => {
+            const res = await pool.query(`
+        SELECT id, name FROM categories
+      `);
+            return res.rows;
         }
     },
     Mutation: {
@@ -140,13 +169,15 @@ const resolvers = {
             const client = await pool.connect();
             try {
                 await client.query('BEGIN');
-                const { title, description, instructions, ingredients } = input;
+                console.log("running");
+                const { title, description, instructions, ingredients, categoryId } = input;
+                console.log(categoryId);
                 // 1️⃣ Insert recipe
                 const recipeRes = await client.query(`
-          INSERT INTO recipes (title, description, instructions)
-          VALUES ($1, $2, $3)
+          INSERT INTO recipes (title, description, instructions, category_id)
+          VALUES ($1, $2, $3, $4)
           RETURNING id, title
-          `, [title, description, instructions]);
+          `, [title, description, instructions, categoryId]);
                 const recipeId = recipeRes.rows[0].id;
                 // 2️⃣ Handle ingredients
                 for (const item of ingredients) {
@@ -248,6 +279,21 @@ const resolvers = {
                 console.log(error);
                 throw new Error("failed to fetch ingredient's recipes");
             }
+        },
+        category: async (parent) => {
+            try {
+                console.log(parent, "this");
+                const { category_id } = parent;
+                const res = await pool.query(`
+          SELECT name from categories
+          WHERE id = $1
+          `, [category_id]);
+                return res.rows[0];
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("failed to fetch recipes category");
+            }
         }
     },
     Ingredient: {
@@ -257,6 +303,15 @@ const resolvers = {
         JOIN recipes r ON r.id = ri.recipe_id
         WHERE ri.ingredient_id = $1
         `, [id]);
+            return res.rows;
+        }
+    },
+    Category: {
+        recipes: async (parent) => {
+            const res = await pool.query(`
+        SELECT id, title FROM recipes
+        WHERE category_id = $1
+        `, [parent.id]);
             return res.rows;
         }
     }

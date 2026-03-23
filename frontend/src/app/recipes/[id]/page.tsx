@@ -21,7 +21,9 @@ const RecipePage = () => {
         variables: { id }
     })
     
-    const [deleteRecipe, { loading: deletionLoading, error: deletionError }] = useMutation(DELETE_RECIPE)
+    const [deleteRecipe, { loading: deletionLoading, error: deletionError }] = useMutation(DELETE_RECIPE, {
+        // refetchQueries: [GET_RECIPES, "GetRecipes"]
+    })
 
     if (recipeLoading) return <p>loading</p>
     if (recipeError) return <p>error</p>

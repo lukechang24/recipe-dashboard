@@ -17,6 +17,13 @@ import React from "react"
     width: 375px;
  `
 
+ export const CategoryDropdown = styled.select`
+ `
+
+ export const Option = styled.option`
+   
+ `
+
  export const IngredientSection = styled.div`
    display: flex;
    flex-direction: column;

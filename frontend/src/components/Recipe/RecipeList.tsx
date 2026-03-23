@@ -9,11 +9,15 @@ type RecipesQuery = {
     recipes: Recipe[]
 }
 
-const RecipeList = () => {
-    const { loading, error, data } = useQuery<RecipesQuery>(GET_RECIPES)
+type Props = { 
+    selectedCategory: string
+}
+
+const RecipeList = ({ selectedCategory } : Props) => {
+    const { loading, error, data } = useQuery<RecipesQuery>(GET_RECIPES, { variables: { categoryId: selectedCategory } })
     if (loading) return <p>loading</p>
     if (error) return <p>error</p>
-    if (!data) return null    
+    if (!data) return null
     return(
         <>
             {data.recipes.map((recipe) => (
