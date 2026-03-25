@@ -15,6 +15,7 @@ type Props = {
 const Sidebar = ({ selectedCategoryId, setSelectedCategoryId, categories } : Props) => {
     return(
         <S.SidebarContainer>
+            <S.SidebarTitle>K. Sushi Recipes</S.SidebarTitle>
             <S.CategoryContainer isActive={!selectedCategoryId} onClick={() => setSelectedCategoryId("")}>All Recipes</S.CategoryContainer>
             {categories?.map(category => {
                 const { id, name } = category

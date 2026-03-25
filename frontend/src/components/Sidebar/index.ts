@@ -7,14 +7,25 @@ interface Props {
 export const SidebarContainer = styled.div`
     position: sticky;
     top: 0;
-    width: 250px;
+    width: 200px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 50px;
+    margin: 15px;
+`
+
+export const SidebarTitle = styled.h1`
+    margin: 0;
 `
 
 export const CategoryContainer = styled.button<Props>`
-    color: ${props => props.isActive ? "red" : "black"};
-    padding: 20px 70px;
+    background-color: ${props => props.isActive ? "#F6F6F6" : "transparent"};
+    border: none;
+    text-align: left;
+    padding: 10px 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    &:hover {
+        background-color: #F6F6F6;
+    }
 `

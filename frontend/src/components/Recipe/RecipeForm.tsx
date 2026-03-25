@@ -116,11 +116,12 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                 </S.CategoryDropdown>
             </S.RecipeInputContainer>
             <S.IngredientSection>
-                {ingredients.map((ing, index) => (
+                {ingredients.map((ing, index, arr) => (
                 <IngredientInput
                     key={index}
                     ing={ing}
                     index={index}
+                    arrLen={arr.length}
                     updateIngredient={updateIngredient}
                     removeIngredient={removeIngredient}
                 />

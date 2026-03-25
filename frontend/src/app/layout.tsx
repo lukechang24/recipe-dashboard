@@ -1,6 +1,7 @@
 'use client'
 import client from "../apollo-client"
 import { ApolloProvider, useQuery } from "@apollo/client/react";
+import "./index.css"
 
 export default function RootLayout({
   children,

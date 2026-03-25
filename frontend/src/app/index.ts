@@ -3,6 +3,7 @@ import styled from "styled-components"
 export const Home = styled.div`
     display: flex;
     width: 100%;
+    
 `
 
 export const RecipeSection = styled.div`
@@ -21,5 +22,5 @@ export const CategoryTitle = styled.h2`
 `
 
 export const AddRecipeButton = styled.button`
-    
+    color: white;
 `
