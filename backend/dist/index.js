@@ -282,7 +282,6 @@ const resolvers = {
         },
         category: async (parent) => {
             try {
-                console.log(parent, "this");
                 const { category_id } = parent;
                 const res = await pool.query(`
           SELECT name from categories

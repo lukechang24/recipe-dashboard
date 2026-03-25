@@ -7,6 +7,8 @@ interface Props {
 export const SidebarContainer = styled.div`
     position: sticky;
     top: 0;
+    width: 250px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     padding-top: 50px;

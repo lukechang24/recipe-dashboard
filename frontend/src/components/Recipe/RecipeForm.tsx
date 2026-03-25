@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client/react"
 import { ADD_RECIPE } from "../../graphql/mutations"
 import { GET_CATEGORIES, GET_RECIPES } from "../../graphql/queries"
 import { Categories } from "../../app/types";
+import IngredientInput from "./IngredientInput"
 
 
 import * as S from "./index"
@@ -16,10 +17,17 @@ type IngredientInput = {
 
 type Ingredient = {
     name: string
+    id: string
 }
 
 type CategoriesQuery = {
     categories: [Categories]
+}
+
+type Props = {
+    categories?: Categories[]
+    showForm: any
+    setShowForm: any
 }
 
 const formatIngredients = (ingredients: string) => {
@@ -35,14 +43,13 @@ const formatIngredients = (ingredients: string) => {
     return res
 }
 
-const RecipeForm = () => {
+const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [instructions, setInstructions] = useState("")
     const [categoryId, setCategoryId] = useState("1")
-    const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: ""}}])
+    const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: "", id: ""}}])
     // const [ingredients, setIngredients] = useState<IngredientInput[]>([{ quantity: "5g", ingredient: { name: "salt" } }])
-    const { loading: categoriesLoading, error: categoriesError, data } = useQuery<CategoriesQuery>(GET_CATEGORIES)
     const [addRecipe] = useMutation(ADD_RECIPE, {
         onCompleted: (data) => {
             console.log("recipe added", data)
@@ -50,24 +57,30 @@ const RecipeForm = () => {
         refetchQueries: [GET_RECIPES, "GetRecipes"]
     }) 
 
+    const updateIngredient = (index : number, updatedIng : IngredientInput) => {
+        const updated = [...ingredients]
+        updated[index] = updatedIng
+        setIngredients(updated)
+    }
+
+    const removeIngredient = (index : number) => {
+        setIngredients(ingredients.filter((_, i) => i !== index))
+    }
+
+    const validateForm = () => {
+        if (!title.trim()) return "Title is required"
+        if (!ingredients.length) return "At least one ingredient is required"
+        for (const i of ingredients) {
+            if (!i.ingredient.name.trim()) return "All ingredients need a name"
+        }
+        return null
+    }
+
     const handleForm = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!title.trim()) {
-            alert("Title is required")
-            return
-        }
+        const error = validateForm()
+        if(error) return alert(error)
 
-        if (ingredients.length === 0) {
-            alert("At least one ingredient is required")
-            return
-        }
-
-        for (const i of ingredients) {
-            if (!i.ingredient.name.trim()) {
-            alert("All ingredients need a name and quantity")
-            return
-            }
-        }
         const input = {
             title,
             description,
@@ -78,7 +91,7 @@ const RecipeForm = () => {
         addRecipe({ variables: { input } })
     }
     return(
-        <S.RecipeForm onSubmit={(e) => handleForm(e)}>
+        <S.RecipeForm show={showForm} onSubmit={(e) => handleForm(e)}>
             <S.RecipeInputContainer>
                 Name of Recipe:
                 <S.RecipeInput value={title} onChange={(e) => setTitle(e.currentTarget.value)}></S.RecipeInput>
@@ -94,7 +107,7 @@ const RecipeForm = () => {
             <S.RecipeInputContainer>
                 Recipe Category
                 <S.CategoryDropdown value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                    {data?.categories.map(category => {
+                    {categories?.map(category => {
                         const { id, name } = category
                         return(
                             <S.Option key={id} value={category.id}>{name}</S.Option>
@@ -103,44 +116,19 @@ const RecipeForm = () => {
                 </S.CategoryDropdown>
             </S.RecipeInputContainer>
             <S.IngredientSection>
-                Ingredients: 
-                {
-                    ingredients.map((ing, index) => {
-                        return(
-                            <S.IngredientContainer key={index}>
-                                <input
-                                    placeholder="Ingredient"
-                                    value={ing.ingredient.name}
-                                    onChange={(e) => {
-                                        const updated = [...ingredients]
-                                        updated[index].ingredient.name = e.target.value
-                                        setIngredients(updated)
-                                    }}
-                                    />
-
-                                <input
-                                    placeholder="Quantity"
-                                    value={ing.quantity}
-                                    onChange={(e) => {
-                                        const updated = [...ingredients]
-                                        updated[index].quantity = e.target.value
-                                        setIngredients(updated)
-                                    }}
-                                />
-                                <button type="button" onClick={() => {
-                                setIngredients(ingredients.filter((_, i) => i !== index))
-                                }}>
-                                Remove
-                                </button>
-                            </S.IngredientContainer>
-                        )
-                    })
-                }
-            <button type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "" } }])}>
-                add
-            </button>
+                {ingredients.map((ing, index) => (
+                <IngredientInput
+                    key={index}
+                    ing={ing}
+                    index={index}
+                    updateIngredient={updateIngredient}
+                    removeIngredient={removeIngredient}
+                />
+                ))}
+                <button type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>Add Another Ingredient</button>
             </S.IngredientSection>
             <button type="submit">Add Recipe</button>
+            <button type="button" onClick={() => setShowForm(false)}>x</button>
         </S.RecipeForm>
     )
 }
