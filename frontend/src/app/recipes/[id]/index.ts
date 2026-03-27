@@ -47,5 +47,5 @@ export const Instructions = styled.p`
 `
 
 export const DeleteButton = styled.button`
-    
+    width: 50px;
 `

@@ -11,11 +11,10 @@ export const SidebarContainer = styled.div`
     height: 100vh;
     display: flex;
     flex-direction: column;
-    margin: 15px;
 `
 
 export const SidebarTitle = styled.h1`
-    margin: 0;
+    margin-bottom: 10px;
 `
 
 export const CategoryContainer = styled.button<Props>`

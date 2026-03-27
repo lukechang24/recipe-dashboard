@@ -1,6 +1,7 @@
 import React from "react"
 import { useRouter } from 'next/navigation'
 import { Recipe } from "../../app/types"
+import * as S from "./index"
 
 type RecipeCardProps = Recipe
 
@@ -12,11 +13,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ id, title, createdAt, descripti
         router.push(`/recipes/${id}`)
     }
     return(
-        <div onClick={() => handleNavigation(id)}>
-            <h1>{title}</h1>
+        <S.RecipeDiv onClick={() => handleNavigation(id)}>
+            <S.RecipeTitle>{title}</S.RecipeTitle>
             <p>{date}</p>
-            <p>{description}</p>
-        </div>
+        </S.RecipeDiv>
     )
 }
 

@@ -89,11 +89,13 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
             ingredients
         }
         addRecipe({ variables: { input } })
+        setShowForm(false)
     }
     return(
         <S.RecipeForm show={showForm} onSubmit={(e) => handleForm(e)}>
+            <S.ExitButton type="button" onClick={() => setShowForm(false)}>x</S.ExitButton>
             <S.RecipeInputContainer>
-                Name of Recipe:
+                Recipe Name:
                 <S.RecipeInput value={title} onChange={(e) => setTitle(e.currentTarget.value)}></S.RecipeInput>
             </S.RecipeInputContainer>
             <S.RecipeInputContainer>
@@ -129,7 +131,6 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                 <button type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>Add Another Ingredient</button>
             </S.IngredientSection>
             <button type="submit">Add Recipe</button>
-            <button type="button" onClick={() => setShowForm(false)}>x</button>
         </S.RecipeForm>
     )
 }

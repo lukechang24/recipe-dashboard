@@ -28,6 +28,7 @@ const Home = () => {
             <S.CategoryTitle>{selectedCategory?.name || "All Recipes"}</S.CategoryTitle>
             <S.AddRecipeButton onClick={() => setShowForm(!showForm)}>Add Recipe</S.AddRecipeButton>
           </S.Header>
+          <S.Backdrop show={showForm}></S.Backdrop>
           <RecipeForm categories={data?.categories} showForm={showForm} setShowForm={setShowForm}/>
           <RecipeList selectedCategoryId={selectedCategoryId}/>
         </S.RecipeSection>
