@@ -95,19 +95,19 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
         <S.RecipeForm show={showForm} onSubmit={(e) => handleForm(e)}>
             <S.ExitButton type="button" onClick={() => setShowForm(false)}>x</S.ExitButton>
             <S.RecipeInputContainer>
-                Recipe Name:
+                <S.InputTitle>Recipe Name: </S.InputTitle>
                 <S.RecipeInput value={title} onChange={(e) => setTitle(e.currentTarget.value)}></S.RecipeInput>
             </S.RecipeInputContainer>
             <S.RecipeInputContainer>
-                Description: 
+                <S.InputTitle>Description: </S.InputTitle>
                 <S.RecipeInput value={description} onChange={(e) => setDescription(e.currentTarget.value)}></S.RecipeInput>
             </S.RecipeInputContainer>
             <S.RecipeInputContainer>
-                Instructions: 
+                <S.InputTitle>Instructions: </S.InputTitle>
                 <S.RecipeInput value={instructions} onChange={(e) => setInstructions(e.currentTarget.value)}></S.RecipeInput>
             </S.RecipeInputContainer>
             <S.RecipeInputContainer>
-                Recipe Category
+                <S.InputTitle>Recipe Category: </S.InputTitle>
                 <S.CategoryDropdown value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
                     {categories?.map(category => {
                         const { id, name } = category
@@ -118,6 +118,7 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                 </S.CategoryDropdown>
             </S.RecipeInputContainer>
             <S.IngredientSection>
+                <S.InputTitle>Ingredients: </S.InputTitle>
                 {ingredients.map((ing, index, arr) => (
                 <IngredientInput
                     key={index}
@@ -128,9 +129,9 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                     removeIngredient={removeIngredient}
                 />
                 ))}
-                <button type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>Add Another Ingredient</button>
+                <S.AddIngredient type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>+ Add Ingredient</S.AddIngredient>
             </S.IngredientSection>
-            <button type="submit">Add Recipe</button>
+            <S.AddRecipe type="submit">Add Recipe</S.AddRecipe>
         </S.RecipeForm>
     )
 }

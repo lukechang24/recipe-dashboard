@@ -16,18 +16,18 @@ type Props = {
 
 const IngredientInput = ({ ing, index, updateIngredient, removeIngredient, arrLen } : Props) => (
   <S.IngredientContainer>
-    <input
+    <S.IngredientNameInput
       placeholder="Ingredient"
       value={ing.ingredient.name}
       onChange={(e) => updateIngredient(index, { ...ing, ingredient: { name: e.target.value } })}
     />
-    <input
+    <S.IngredientQtyInput
       placeholder="Quantity"
       value={ing.quantity}
       onChange={(e) => updateIngredient(index, { ...ing, quantity: e.target.value })}
     />
     {
-        arrLen > 1 ? <button type="button" onClick={() => removeIngredient(index)}>Remove</button> : null
+        arrLen > 1 ? <S.RemoveIngredient type="button" onClick={() => removeIngredient(index)}>Remove</S.RemoveIngredient> : null
     }
   </S.IngredientContainer>
 )

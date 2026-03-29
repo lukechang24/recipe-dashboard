@@ -25,6 +25,6 @@ export const CategoryContainer = styled.button<Props>`
     border-radius: 5px;
     margin: 5px 0;
     &:hover {
-        background-color: #F6F6F6;
+        background-color: #f6f6f6e3;
     }
 `

@@ -12,3 +12,8 @@ button {
 *:not(dialog) {
     margin: 0;
 }
+
+input {
+    padding: 3px;
+    border-radius: 5px;
+}
