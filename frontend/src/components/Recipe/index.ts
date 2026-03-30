@@ -22,6 +22,10 @@ export const RecipeForm = styled.form<Props>`
    box-sizing: border-box;
 `
 
+export const RecipeFormTitle = styled.h3`
+   margin: 10px 0;
+`
+
 export const RecipeInputContainer = styled.div`
    display: flex;
    flex-direction: column;
@@ -52,6 +56,7 @@ export const IngredientSection = styled.div`
 `
 
 export const IngredientContainer = styled.div`
+   position: relative;
    display: flex;
    width: 100%;
    gap: 5px;
@@ -59,8 +64,12 @@ export const IngredientContainer = styled.div`
 `
 
 export const IngredientNameInput = styled.input`
-   flex: 3;
+   width: 175px;
    min-width: 0;
+   &:focus {
+      border-radius: 5px 5px 0 0;
+      outline: none;
+   }
 `
 
 export const IngredientQtyInput = styled.input`
@@ -68,8 +77,24 @@ export const IngredientQtyInput = styled.input`
    min-width: 0;
 `
 
-export const RemoveIngredient = styled.button`
+export const AutocompleteContainer = styled.div`
+   position: absolute;
+   left: 0;
+   bottom: -100px;
+   width: 185px;
+   height: 100px;
+   background-color: white;
+   padding: 10px;
+   border-radius: 0 0 5px 5px;
+   border-top: 1px solid blue;
+   box-sizing: border-box;
+   -webkit-box-shadow: 0px 12px 26px -4px rgba(0,0,0,0.37); 
+   box-shadow: 0px 12px 26px -4px rgba(0,0,0,0.37);
+`
+
+export const RemoveIngredient = styled.button<Props>`
    // flex-shrink: 0;
+   visibility: ${props => props.show ? "visible" : "hidden"};
    background: none;
    border: none;
    color: #d87979;

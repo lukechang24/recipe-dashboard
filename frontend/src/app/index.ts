@@ -9,7 +9,6 @@ export const Home = styled.div`
     display: flex;
     width: 100%;
     box-sizing: border-box;
-    padding: 15px;
 `
 
 export const RecipeSection = styled.div`

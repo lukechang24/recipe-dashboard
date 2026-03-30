@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { useQuery } from "@apollo/client/react";
 import { useMutation } from "@apollo/client/react"
 import { ADD_RECIPE } from "../../graphql/mutations"
-import { GET_CATEGORIES, GET_RECIPES } from "../../graphql/queries"
+import { GET_INGREDIENTS, GET_RECIPES } from "../../graphql/queries"
 import { Categories } from "../../app/types";
 import IngredientInput from "./IngredientInput"
 
@@ -18,6 +18,10 @@ type IngredientInput = {
 type Ingredient = {
     name: string
     id: string
+}
+
+type IngredientsQuery = {
+    ingredients: [Ingredient]
 }
 
 type CategoriesQuery = {
@@ -50,6 +54,7 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
     const [categoryId, setCategoryId] = useState("1")
     const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: "", id: ""}}])
     // const [ingredients, setIngredients] = useState<IngredientInput[]>([{ quantity: "5g", ingredient: { name: "salt" } }])
+    const { data } = useQuery<IngredientsQuery>(GET_INGREDIENTS)
     const [addRecipe] = useMutation(ADD_RECIPE, {
         onCompleted: (data) => {
             console.log("recipe added", data)
@@ -94,6 +99,7 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
     return(
         <S.RecipeForm show={showForm} onSubmit={(e) => handleForm(e)}>
             <S.ExitButton type="button" onClick={() => setShowForm(false)}>x</S.ExitButton>
+            <S.RecipeFormTitle>Recipe Form</S.RecipeFormTitle>
             <S.RecipeInputContainer>
                 <S.InputTitle>Recipe Name: </S.InputTitle>
                 <S.RecipeInput value={title} onChange={(e) => setTitle(e.currentTarget.value)}></S.RecipeInput>
@@ -129,7 +135,7 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                     removeIngredient={removeIngredient}
                 />
                 ))}
-                <S.AddIngredient type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>+ Add Ingredient</S.AddIngredient>
+                <S.AddIngredient type="button" onClick={() => setIngredients([...ingredients, { quantity: "", ingredient: { name: "", id: "" } }])}>+ Add Another Ingredient</S.AddIngredient>
             </S.IngredientSection>
             <S.AddRecipe type="submit">Add Recipe</S.AddRecipe>
         </S.RecipeForm>

@@ -42,6 +42,14 @@ const GET_CATEGORIES = gql`
     }
 `
 
+const GET_INGREDIENTS = gql`
+    query GetIngredients {
+        ingredients {
+            name
+        }
+    }
+`
+
 // const GET_RECIPES = gql`
 //     query GetRecipes {
 //         recipes {
@@ -58,4 +66,4 @@ const GET_CATEGORIES = gql`
 // `
 
 
-export { GET_RECIPES, GET_RECIPE, GET_CATEGORIES }
+export { GET_RECIPES, GET_RECIPE, GET_CATEGORIES, GET_INGREDIENTS }

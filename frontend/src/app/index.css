@@ -4,6 +4,10 @@ body, html {
     overflow-x: hidden;
 }
 
+body {
+    padding: 15px;
+}
+
 button {
     cursor: pointer;
     /* border: none; */
