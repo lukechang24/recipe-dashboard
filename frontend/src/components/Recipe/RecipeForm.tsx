@@ -53,7 +53,6 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
     const [instructions, setInstructions] = useState("")
     const [categoryId, setCategoryId] = useState("1")
     const [ingredients, setIngredients] = useState<IngredientInput[]>([{quantity: "", ingredient: {name: "", id: ""}}])
-    // const [ingredients, setIngredients] = useState<IngredientInput[]>([{ quantity: "5g", ingredient: { name: "salt" } }])
     const { data } = useQuery<IngredientsQuery>(GET_INGREDIENTS)
     const [addRecipe] = useMutation(ADD_RECIPE, {
         onCompleted: (data) => {
@@ -131,6 +130,7 @@ const RecipeForm = ({ categories, showForm, setShowForm } : Props) => {
                     ing={ing}
                     index={index}
                     arrLen={arr.length}
+                    allIngredients={data?.ingredients}
                     updateIngredient={updateIngredient}
                     removeIngredient={removeIngredient}
                 />

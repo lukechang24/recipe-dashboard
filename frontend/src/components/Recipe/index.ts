@@ -77,19 +77,29 @@ export const IngredientQtyInput = styled.input`
    min-width: 0;
 `
 
-export const AutocompleteContainer = styled.div`
+export const AutocompleteContainer = styled.div<Props>`
    position: absolute;
    left: 0;
-   bottom: -100px;
+   top: calc(100%);
    width: 185px;
-   height: 100px;
+   display: ${props => props.show ? "flex" : "none"};
+   flex-direction: column;
    background-color: white;
-   padding: 10px;
+   padding: 2.5px 0;
    border-radius: 0 0 5px 5px;
    border-top: 1px solid blue;
    box-sizing: border-box;
    -webkit-box-shadow: 0px 12px 26px -4px rgba(0,0,0,0.37); 
    box-shadow: 0px 12px 26px -4px rgba(0,0,0,0.37);
+   z-index: 100;
+`
+
+export const AutocompleteIngredient = styled.li`
+   list-style-type: none;
+   padding: 0 10px;
+   &:hover {
+      background-color: #ACCEFF;
+   }
 `
 
 export const RemoveIngredient = styled.button<Props>`
